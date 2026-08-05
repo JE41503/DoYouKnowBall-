@@ -1116,7 +1116,7 @@ async function renderRaritiesIfDone(){
   if(allFilled()) renderSummary();
 }
 
-const SITE_URL = 'https://doyouknowball.app';
+const SITE_URL = 'https://doyouknowball-nfl-cfb.netlify.app/';
 function generateShareText(){
   const correct = cellState.flat().filter(c=>c.status==='correct').length;
   let lines = [];
@@ -1353,7 +1353,7 @@ async function finalizeIfNeeded(){
   if(stats.lastDate !== puzzle.date){
     stats.played = (stats.played||0) + 1;
     if(correct>0){
-      stats.streak = (stats.streak||0) + 1;
+      stats.streak = isConsecutiveDay(stats.lastDate, puzzle.date) ? (stats.streak||0) + 1 : 1;
     } else {
       stats.streak = 0;
     }
