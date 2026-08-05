@@ -170,11 +170,6 @@
     outline:none;
   }
   .modal input:focus{border-color:var(--gold);}
-  .suggest{max-height:190px;overflow-y:auto;margin-top:8px;border-radius:4px;overflow-x:hidden;}
-  .suggest div{
-    padding:9px 10px;font-size:13.5px;cursor:pointer;border-bottom:1px solid rgba(233,228,214,0.08);
-  }
-  .suggest div:hover{background:var(--panel-hover);}
   .hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(233,228,214,0.55);margin-top:8px;line-height:1.4;}
   .modal-actions{display:flex;justify-content:space-between;margin-top:14px;gap:10px;}
   .btn{
@@ -230,15 +225,129 @@
   .cell-years{
     font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(233,228,214,0.6);margin-top:3px;
   }
+
+  /* ---- header controls ---- */
+  .kicker-row{
+    display:flex;align-items:center;justify-content:center;gap:8px;position:relative;margin-bottom:6px;
+  }
+  .kicker-row .kicker{margin-bottom:0;}
+  .help-btn{
+    position:absolute;right:0;top:50%;transform:translateY(-50%);
+    width:22px;height:22px;border-radius:50%;
+    border:1px solid var(--gold);background:transparent;color:var(--gold-bright);
+    font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .help-btn:hover{background:rgba(212,160,23,0.15);}
+
+  .difficulty-row{
+    display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 4px;flex-wrap:wrap;
+  }
+  .difficulty-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(233,228,214,0.65);text-transform:uppercase;letter-spacing:0.08em;
+  }
+  .difficulty-toggle{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:3px;}
+  .diff-btn{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.03em;
+    padding:5px 11px;border-radius:16px;border:none;background:transparent;color:rgba(233,228,214,0.6);
+    cursor:pointer;transition:background 0.15s, color 0.15s;
+  }
+  .diff-btn:hover{color:var(--chalk);}
+  .diff-btn.active{background:var(--gold);color:var(--navy);font-weight:700;}
+  .diff-btn.locked{color:rgba(233,228,214,0.35);cursor:not-allowed;}
+  .diff-btn.locked:hover{color:rgba(233,228,214,0.45);}
+  .difficulty-desc{
+    text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+    color:rgba(233,228,214,0.5);margin-bottom:14px;min-height:14px;
+  }
+  .autocomplete-row{
+    display:flex;justify-content:center;margin:14px 0 0;
+  }
+  .autocomplete-btn{
+    border-color:var(--brick);color:#e8a1a1;
+    display:flex;align-items:center;gap:6px;
+  }
+  .autocomplete-btn:hover{background:rgba(155,34,38,0.18);}
+
+  /* ---- cell reveal animation ---- */
+  @keyframes cellPop{
+    0%{transform:scale(0.85);opacity:0;}
+    60%{transform:scale(1.04);opacity:1;}
+    100%{transform:scale(1);opacity:1;}
+  }
+  td.cell.correct .cell-inner, td.cell.wrong .cell-inner{
+    animation:cellPop 0.28s ease-out;
+  }
+  .cell-dupe{
+    font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--brick);
+    margin-top:3px;text-transform:uppercase;letter-spacing:0.04em;
+  }
+
+  /* ---- hint ---- */
+  .hint-btn{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;
+    padding:7px 12px;border-radius:4px;border:1px dashed var(--gold);background:transparent;
+    color:var(--gold-bright);cursor:pointer;margin-top:10px;width:100%;
+  }
+  .hint-btn:hover{background:rgba(212,160,23,0.1);}
+  .hint-btn:disabled{opacity:0.4;cursor:not-allowed;}
+  .hint-reveal{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold-bright);
+    margin-top:8px;text-align:center;
+  }
+
+  /* ---- how-to-play modal ---- */
+  .howto-list{margin:0 0 14px;padding-left:18px;font-family:'Barlow',sans-serif;font-size:13.5px;line-height:1.55;color:rgba(233,228,214,0.85);}
+  .howto-list li{margin-bottom:8px;}
+  .howto-list b{color:var(--gold-bright);}
+
+  /* ---- confetti ---- */
+  #confettiLayer{
+    position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden;
+  }
+  .confetti-piece{
+    position:absolute;top:-20px;width:8px;height:14px;opacity:0.9;
+    animation:confettiFall linear forwards;
+  }
+  @keyframes confettiFall{
+    0%{transform:translateY(0) rotate(0deg);opacity:0.95;}
+    100%{transform:translateY(105vh) rotate(540deg);opacity:0.4;}
+  }
+
+  @media (max-width:380px){
+    .difficulty-label{display:none;}
+    .diff-btn{padding:5px 8px;font-size:9.5px;}
+    td.cell{height:76px;}
+    .cell-name{font-size:11px;}
+    .cell-years,.cell-rarity-badge,.cell-dupe{font-size:8.5px;}
+    table.grid{border-spacing:4px;}
+    .badge-label{font-size:8px;}
+  }
+  @media (min-width:640px){
+    td.cell{height:98px;}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Daily Puzzle</div>
+    <div class="kicker-row">
+      <div class="kicker">Daily Puzzle</div>
+      <button class="help-btn" id="helpBtn" onclick="openHowTo()" title="How to play" aria-label="How to play">?</button>
+    </div>
     <h1>THINK YOU KNOW BALL?</h1>
     <div class="sub" id="dateLabel">—</div>
   </header>
+
+  <div class="difficulty-row">
+    <span class="difficulty-label">Mode:</span>
+    <div class="difficulty-toggle" id="difficultyToggle" role="group" aria-label="Difficulty">
+      <button class="diff-btn" data-diff="rookie" onclick="setDifficulty('rookie')">Rookie</button>
+      <button class="diff-btn" data-diff="pro" onclick="setDifficulty('pro')">Pro</button>
+      <button class="diff-btn" data-diff="hof" onclick="setDifficulty('hof')">Hall of Fame</button>
+    </div>
+  </div>
+  <div class="difficulty-desc" id="difficultyDesc"></div>
 
   <div class="scoreboard">
     <div class="sb-chip"><div class="num" id="scoreNum">0/9</div><div class="lbl">Score</div></div>
@@ -257,7 +366,11 @@
     <table class="grid" id="gridTable"></table>
   </div>
 
-  <div class="note">Guess a player who fits both the college and the NFL team. One guess per box — choose wisely.</div>
+  <div class="autocomplete-row" id="autocompleteRow" style="display:none;">
+    <button class="btn autocomplete-btn" id="autocompleteBtn" onclick="confirmAutocomplete()">🪄 Autocomplete Grid — surrenders your streak</button>
+  </div>
+
+  <div class="note" id="noteText">Guess a player who fits both the college and the NFL team. One guess per box — choose wisely.</div>
 
   <div id="summaryZone"></div>
 
@@ -265,7 +378,9 @@
 </div>
 
 <div id="modalZone"></div>
+<div id="howtoZone"></div>
 <div class="toast" id="toast"></div>
+<div id="confettiLayer"></div>
 
 <script>
 /* ---------------- DATA ---------------- */
@@ -465,11 +580,15 @@ function normalize(s){
 function playersFor(team, college){
   return POOL_DATA.filter(p => p.c===college && p.t.includes(team));
 }
-// Minimum number of real players a (team, college) cell must have to be used in a
-// generated puzzle. Guarantees every grid is completable while still leaving room for
-// rare/obscure correct answers within that pool of 10+ — rarity isn't filtered, just count.
-const MIN_CELL_PLAYERS = 10;
-function pairValid(team, college){ return playersFor(team,college).length >= MIN_CELL_PLAYERS; }
+// Per-mode floor on how many real answers a cell must have to be usable at all — the
+// floor itself is one lever of difficulty (fewer possible answers = harder), separate
+// from the notability-based ranking below.
+const MODE_RULES = {
+  rookie: { minPlayers: 14 },
+  pro:    { minPlayers: 10 },
+  hof:    { minPlayers: 6  }
+};
+function pairValid(team, college, minPlayers){ return playersFor(team,college).length >= minPlayers; }
 
 function mulberry32(seed){
   return function(){
@@ -503,22 +622,44 @@ function todayStr(){
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
 
+/* ---------------- CELL DIFFICULTY ----------------
+   A cell's difficulty (1=easiest, 10=hardest) blends two real, data-backed signals the
+   player actually experiences: how many valid answers exist (a shallow pool means fewer
+   ways in), and how recognizable those answers tend to be (a pool of long-career/famous
+   names is easier to draw a correct guess from than one full of one-year names). Notability
+   per player reuses hand-curated fame where we have it, and career length everywhere else —
+   see longevityScoreFor below, same proxy Autocomplete Grid uses.
+*/
+const _cellDifficultyCache = {};
+function cellDifficultyScore(team, college){
+  const key = team+'|'+college;
+  if(key in _cellDifficultyCache) return _cellDifficultyCache[key];
+  const pool = playersFor(team, college);
+  const poolSize = pool.length;
+  let totalNotability = 0;
+  for(const p of pool){
+    totalNotability += (typeof p.f === 'number') ? p.f : longevityScoreFor(p.n);
+  }
+  const avgNotability = poolSize ? totalNotability/poolSize : 10;
+  const poolDifficulty = Math.max(1, Math.min(10, Math.round(10 - (Math.min(poolSize,50)/50)*9)));
+  const difficulty = Math.round(poolDifficulty*0.5 + avgNotability*0.5);
+  const result = { poolSize, avgNotability, difficulty };
+  _cellDifficultyCache[key] = result;
+  return result;
+}
+
 /* ---------------- PUZZLE GENERATION ----------------
    With 32 teams and 133 colleges, exhaustively checking every 3-team x 3-college
    combination (millions of pairs) isn't practical in a browser. Instead:
    1. Only consider teams/colleges that already have enough verified players in
-      POOL_DATA to plausibly form a solvable grid (this "eligible" set grows over
-      time as the AI-verification system confirms more players).
-   2. If the eligible sets are small enough, exhaustively check them (deterministic,
-      same as before). If they've grown large, fall back to seeded random sampling,
-      which is effectively instant and still deterministic per day.
+      POOL_DATA (per-mode floor from MODE_RULES) to plausibly form a solvable grid.
+   2. Every 3-team combo whose eligible colleges intersect in 3+ is checked exhaustively
+      (32-choose-3 is only 4,960 combos — trivial).
+   3. Within a chosen team-triple, colleges are ranked by cellDifficultyScore and each
+      mode draws from its own third of that ranking (Rookie = easiest third, Pro =
+      middle, Hall of Fame = hardest third) — relative to what's actually available for
+      that specific triple, rather than a fixed absolute cutoff that might not exist.
 */
-function nCk(n,k){
-  if(k>n || k<0) return 0;
-  let num=1, den=1;
-  for(let i=0;i<k;i++){ num *= (n-i); den *= (i+1); }
-  return num/den;
-}
 function sampleThree(arr, rng){
   const copy = arr.slice();
   const picked = [];
@@ -529,21 +670,37 @@ function sampleThree(arr, rng){
   }
   return picked;
 }
-let _viableComboCache = null;
-function getViableCombos(){
-  if(_viableComboCache) return _viableComboCache;
-  // For each team, the set of colleges that give it a well-populated (>=MIN_CELL_PLAYERS) cell.
+function sampleThreeByDifficulty(teams, collegePool, mode, rng){
+  const scored = collegePool.map(c=>{
+    let sum=0;
+    for(const t of teams) sum += cellDifficultyScore(t,c).difficulty;
+    return { c, avg: sum/teams.length };
+  });
+  scored.sort((a,b)=>a.avg-b.avg); // ascending: easiest first
+  const n = scored.length;
+  const thirdSize = Math.max(3, Math.ceil(n/3));
+  let bucket;
+  if(mode==='rookie'){
+    bucket = scored.slice(0, thirdSize);
+  } else if(mode==='hof'){
+    bucket = scored.slice(Math.max(0, n-thirdSize));
+  } else {
+    const start = Math.max(0, Math.floor((n-thirdSize)/2));
+    bucket = scored.slice(start, start+thirdSize);
+  }
+  const pool = bucket.length>=3 ? bucket.map(x=>x.c) : scored.map(x=>x.c);
+  return sampleThree(pool, rng);
+}
+let _viableComboCache = {};
+function getViableCombos(mode){
+  if(_viableComboCache[mode]) return _viableComboCache[mode];
+  const minPlayers = MODE_RULES[mode].minPlayers;
+  // For each team, the set of colleges that give it a well-populated (>=minPlayers) cell.
   const goodCollegesForTeam = {};
   NFL_TEAMS.forEach(t=>{
-    goodCollegesForTeam[t] = COLLEGES.filter(c => pairValid(t,c));
+    goodCollegesForTeam[t] = COLLEGES.filter(c => pairValid(t,c,minPlayers));
   });
-  // Only teams with enough well-populated colleges can possibly anchor a valid grid.
   const viableTeams = NFL_TEAMS.filter(t => goodCollegesForTeam[t].length >= 3);
-  // Every 3-team combo whose colleges intersect in >=3 colleges is a fully valid grid.
-  // 32-choose-3 is only 4,960 combos, trivial to check exhaustively — this replaces the
-  // old "hope random sampling finds something, else fall back to a broken guess" approach
-  // with a search that's both fast and guaranteed correct. Computed once and cached since
-  // it only depends on POOL_DATA, not on the date.
   const viableCombos = [];
   const teamTriples = combos(viableTeams, 3);
   for(const teams of teamTriples){
@@ -556,34 +713,38 @@ function getViableCombos(){
       viableCombos.push({ teams, colleges: intersection });
     }
   }
-  _viableComboCache = viableCombos;
+  _viableComboCache[mode] = viableCombos;
   return viableCombos;
 }
-function buildTodaysPuzzle(dateOverride){
+function buildTodaysPuzzle(dateOverride, mode){
+  mode = MODE_RULES[mode] ? mode : 'pro';
   const date = dateOverride || todayStr();
-  const rng = mulberry32(seedFromDate(date));
+  // Seed includes the mode so each mode gets its own stable-per-day grid, not the same
+  // grid with different colleges swapped in.
+  const rng = mulberry32(seedFromDate(date + '|' + mode));
 
-  const viableCombos = getViableCombos();
+  const viableCombos = getViableCombos(mode);
   if(!viableCombos.length){
-    // Should never happen (every team has 14+ good colleges as of the current dataset),
-    // but rather than silently building a broken grid, surface it clearly.
-    throw new Error('No valid puzzle combos found — check MIN_CELL_PLAYERS / data pool.');
+    // Should never happen at these thresholds against the current dataset, but rather
+    // than silently building a broken grid, surface it clearly.
+    throw new Error(`No valid ${mode} puzzle combos found — check MODE_RULES / data pool.`);
   }
 
   const pick = viableCombos[Math.floor(rng() * viableCombos.length)];
   const teams = pick.teams.slice();
-  const cols = sampleThree(pick.colleges, rng);
+  const cols = sampleThreeByDifficulty(teams, pick.colleges, mode, rng);
   // Hard guarantee, checked every time, independent of the selection logic above:
   // refuse to hand back a puzzle unless all 9 cells actually clear the minimum.
+  const minPlayers = MODE_RULES[mode].minPlayers;
   for(const t of teams){
     for(const c of cols){
       const n = playersFor(t, c).length;
-      if(n < MIN_CELL_PLAYERS){
-        throw new Error(`Puzzle generation produced an invalid cell: ${t} x ${c} has only ${n} players (minimum ${MIN_CELL_PLAYERS}). This should be impossible — data or logic bug.`);
+      if(n < minPlayers){
+        throw new Error(`Puzzle generation produced an invalid cell: ${t} x ${c} has only ${n} players (minimum ${minPlayers}) for ${mode}. This should be impossible — data or logic bug.`);
       }
     }
   }
-  return { date, teams, cols };
+  return { date, mode, teams, cols };
 }
 
 /* ---------------- STATE ---------------- */
@@ -595,8 +756,105 @@ let cellState = []; // 3x3 -> {status:'empty'|'correct'|'wrong', guess:''}
 for(let r=0;r<3;r++){
   cellState.push([{status:'empty',guess:''},{status:'empty',guess:''},{status:'empty',guess:''}]);
 }
-let stats = { streak:0, played:0, lastDate:null };
+let stats = { streak:0, played:0, lastDate:null, unlocked:{pro:false,hof:false}, modeProgress:{rookie:{count:0,lastDate:null},pro:{count:0,lastDate:null}} };
 let ALL_NAMES = [];
+
+/* ---------------- DIFFICULTY ---------------- */
+const DIFFICULTY_INFO = {
+  rookie: { label:'Rookie', desc:'Autocomplete Grid available (surrenders streak) · one free hint per puzzle', autocomplete:true, hint:true, noRepeat:false },
+  pro:    { label:'Pro', desc:'Autocomplete Grid available (surrenders streak) · no hints', autocomplete:true, hint:false, noRepeat:false },
+  hof:    { label:'Hall of Fame', desc:'No autocomplete · no hints · no repeat players in the grid', autocomplete:false, hint:false, noRepeat:true }
+};
+// Unlock rules: playing at the CURRENT unlocked tier and stringing together a real
+// (calendar-consecutive) streak of qualifying scores proves you're ready for the next
+// one. Archive/past-date plays never count — only the live daily puzzle does.
+const QUALIFY_SCORE = { rookie: 6, pro: 7 }; // min correct out of 9
+const REQUIRE_STREAK_DAYS = 3;
+let difficulty = lsGet('difficulty') || 'rookie';
+let hintUsedThisPuzzle = false;
+
+function defaultUnlocks(){ return { pro:false, hof:false }; }
+function defaultModeProgress(){ return { rookie:{count:0,lastDate:null}, pro:{count:0,lastDate:null} }; }
+
+// If the saved difficulty is no longer unlocked (e.g. stats were reset, or this is an
+// old save from before unlocks existed), drop back to the highest tier actually earned.
+function enforceDifficultyUnlocked(){
+  const unlocked = stats.unlocked || defaultUnlocks();
+  if(difficulty==='hof' && !unlocked.hof) difficulty = unlocked.pro ? 'pro' : 'rookie';
+  else if(difficulty==='pro' && !unlocked.pro) difficulty = 'rookie';
+  lsSet('difficulty', difficulty);
+}
+
+function applyDifficultyUI(){
+  const unlocked = stats.unlocked || defaultUnlocks();
+  const progress = stats.modeProgress || defaultModeProgress();
+  document.querySelectorAll('.diff-btn').forEach(b=>{
+    const d = b.dataset.diff;
+    const isLocked = (d==='pro' && !unlocked.pro) || (d==='hof' && !unlocked.hof);
+    b.classList.toggle('active', d===difficulty);
+    b.classList.toggle('locked', isLocked);
+    b.innerHTML = isLocked ? `🔒 ${DIFFICULTY_INFO[d].label}` : DIFFICULTY_INFO[d].label;
+  });
+  const info = DIFFICULTY_INFO[difficulty];
+  const descEl = document.getElementById('difficultyDesc');
+  if(descEl){
+    let extra = '';
+    if(difficulty==='rookie' && !unlocked.pro){
+      const c = Math.min(progress.rookie.count, REQUIRE_STREAK_DAYS);
+      extra = ` · Pro unlocks at a ${REQUIRE_STREAK_DAYS}-day streak of ${QUALIFY_SCORE.rookie}+/9 (${c}/${REQUIRE_STREAK_DAYS})`;
+    } else if(difficulty==='pro' && !unlocked.hof){
+      const c = Math.min(progress.pro.count, REQUIRE_STREAK_DAYS);
+      extra = ` · Hall of Fame unlocks at a ${REQUIRE_STREAK_DAYS}-day streak of ${QUALIFY_SCORE.pro}+/9 (${c}/${REQUIRE_STREAK_DAYS})`;
+    }
+    descEl.textContent = info.desc + extra;
+  }
+}
+async function setDifficulty(d){
+  if(!DIFFICULTY_INFO[d]) return;
+  const unlocked = stats.unlocked || defaultUnlocks();
+  if(d==='pro' && !unlocked.pro){ showToast('Pro is locked — build a streak in Rookie first', 'wrong'); return; }
+  if(d==='hof' && !unlocked.hof){ showToast('Hall of Fame is locked — build a streak in Pro first', 'wrong'); return; }
+  if(d === difficulty){ applyDifficultyUI(); return; }
+  difficulty = d;
+  lsSet('difficulty', d);
+  closeModal(); // an open guess modal would reference a cell from the old grid
+  applyDifficultyUI();
+  // Each mode has its own grid, so switching modes has to rebuild the puzzle, not just
+  // change UI chrome around the same one.
+  if(currentDateStr) await loadPuzzleForDate(currentDateStr);
+}
+function isConsecutiveDay(prevDateStr, dateStr){
+  if(!prevDateStr) return false;
+  const prev = new Date(prevDateStr+'T00:00:00');
+  const cur = new Date(dateStr+'T00:00:00');
+  const diffDays = Math.round((cur-prev)/86400000);
+  return diffDays === 1;
+}
+function updateModeUnlocks(correct){
+  if(!TODAY_STR || puzzle.date !== TODAY_STR) return; // only the live daily puzzle counts
+  stats.unlocked = stats.unlocked || defaultUnlocks();
+  stats.modeProgress = stats.modeProgress || defaultModeProgress();
+
+  if(difficulty === 'rookie' && !stats.unlocked.pro){
+    const mp = stats.modeProgress.rookie;
+    if(mp.lastDate === puzzle.date) return; // already counted today's Rookie result
+    mp.count = (correct >= QUALIFY_SCORE.rookie) ? (isConsecutiveDay(mp.lastDate, puzzle.date) ? mp.count+1 : 1) : 0;
+    mp.lastDate = puzzle.date;
+    if(mp.count >= REQUIRE_STREAK_DAYS){
+      stats.unlocked.pro = true;
+      showToast('🔓 Pro mode unlocked!', 'correct');
+    }
+  } else if(difficulty === 'pro' && !stats.unlocked.hof){
+    const mp = stats.modeProgress.pro;
+    if(mp.lastDate === puzzle.date) return; // already counted today's Pro result
+    mp.count = (correct >= QUALIFY_SCORE.pro) ? (isConsecutiveDay(mp.lastDate, puzzle.date) ? mp.count+1 : 1) : 0;
+    mp.lastDate = puzzle.date;
+    if(mp.count >= REQUIRE_STREAK_DAYS){
+      stats.unlocked.hof = true;
+      showToast('🔓 Hall of Fame mode unlocked!', 'correct');
+    }
+  }
+}
 
 /* ---------------- STORAGE ---------------- */
 // Personal progress/stats use localStorage directly -- this works standalone with no
@@ -614,22 +872,26 @@ function lsGet(key){
 function lsSet(key, value){
   try{ localStorage.setItem(key, value); }catch(e){}
 }
-async function loadProgress(){
-  // Always start from a clean board for whatever date we're loading — otherwise
-  // switching to a date with no saved progress would leave the previous date's
-  // picks showing on screen.
-  cellState = freshCellState();
-  const raw = lsGet('progress:'+puzzle.date);
-  if(raw){
-    try{ cellState = JSON.parse(raw); }catch(e){}
-  }
+async function loadStats(){
   const raw2 = lsGet('stats:summary');
   if(raw2){
     try{ stats = JSON.parse(raw2); }catch(e){}
   }
+  stats.unlocked = stats.unlocked || defaultUnlocks();
+  stats.modeProgress = stats.modeProgress || defaultModeProgress();
+}
+async function loadCellState(){
+  // Always start from a clean board for whatever date+mode we're loading — otherwise
+  // switching to a date/mode with no saved progress would leave the previous board's
+  // picks showing on screen.
+  cellState = freshCellState();
+  const raw = lsGet('progress:'+puzzle.date+':'+puzzle.mode);
+  if(raw){
+    try{ cellState = JSON.parse(raw); }catch(e){}
+  }
 }
 async function saveProgress(){
-  lsSet('progress:'+puzzle.date, JSON.stringify(cellState));
+  lsSet('progress:'+puzzle.date+':'+puzzle.mode, JSON.stringify(cellState));
 }
 async function saveStats(){
   lsSet('stats:summary', JSON.stringify(stats));
@@ -673,6 +935,82 @@ async function getRarity(college, team, name){
   return null;
 }
 
+// Ranks a cell's candidates by "how recognizable is this pick," combined with recency
+// so a still-active or recently-retired name outranks an equally-notable player from
+// decades ago. Deterministic (no randomness) so the same puzzle always reveals the same
+// answers.
+function recencyScoreFor(player, team){
+  const raw = player.y && player.y[team];
+  if(!raw) return 10; // no year on file — treat as least-recent/unknown
+  const parts = String(raw).split('-').map(s=>parseInt(s,10)).filter(n=>!isNaN(n));
+  if(!parts.length) return 10;
+  const mostRecent = Math.max(...parts);
+  const puzzleYear = parseInt((puzzle && puzzle.date ? puzzle.date : todayStr()).slice(0,4), 10);
+  const yearsAgo = puzzleYear - mostRecent;
+  if(yearsAgo <= 1) return 1;
+  if(yearsAgo <= 3) return 2;
+  if(yearsAgo <= 5) return 3;
+  if(yearsAgo <= 8) return 4;
+  if(yearsAgo <= 12) return 5;
+  if(yearsAgo <= 16) return 6;
+  if(yearsAgo <= 20) return 7;
+  if(yearsAgo <= 25) return 8;
+  if(yearsAgo <= 30) return 9;
+  return 10;
+}
+// Only ~1.4% of POOL_DATA carries a hand-curated fame rating — everyone else would
+// otherwise fall back to a meaningless flat default and get ranked essentially at random.
+// For the un-curated majority, career length (years active in the NFL, merged across every
+// team they played for) is a real, data-backed stand-in for "well known": a player who
+// stuck in the league for a decade is a safer bet to be recognizable than a one-year name.
+const _careerLengthCache = {};
+function careerLengthForName(name){
+  if(name in _careerLengthCache) return _careerLengthCache[name];
+  let min=null, max=null;
+  for(const p of POOL_DATA){
+    if(p.n!==name || !p.y) continue;
+    for(const t in p.y){
+      const parts = String(p.y[t]).split('-').map(s=>parseInt(s,10)).filter(n=>!isNaN(n));
+      for(const y of parts){
+        if(min===null||y<min) min=y;
+        if(max===null||y>max) max=y;
+      }
+    }
+  }
+  const length = (min===null) ? 0 : (max-min+1);
+  _careerLengthCache[name] = length;
+  return length;
+}
+function longevityScoreFor(name){
+  const len = careerLengthForName(name);
+  if(len>=12) return 1;
+  if(len>=9) return 2;
+  if(len>=7) return 3;
+  if(len>=5) return 4;
+  if(len>=4) return 5;
+  if(len>=3) return 6;
+  if(len>=2) return 7;
+  if(len>=1) return 8;
+  return 10; // no year data at all — can't judge longevity
+}
+// Most accomplished + most recently active pick for a cell, used by Autocomplete Grid.
+// Prefers hand-curated fame when any candidate in the pool has it; otherwise falls back
+// to the career-longevity proxy above, rather than let an uninformative default decide.
+function bestKnownPlayerFor(team, college){
+  const pool = playersFor(team, college);
+  if(!pool.length) return null;
+  const curated = pool.filter(p => typeof p.f === 'number');
+  const usingCurated = curated.length > 0;
+  const source = usingCurated ? curated : pool;
+  const scored = source.map(p=>{
+    const recency = recencyScoreFor(p, team);
+    const successScore = usingCurated ? p.f : longevityScoreFor(p.n);
+    return { p, successScore, score: successScore*0.65 + recency*0.35 };
+  });
+  scored.sort((a,b)=> a.score - b.score || a.successScore - b.successScore || a.p.n.localeCompare(b.p.n));
+  return scored[0].p;
+}
+
 /* ---------------- RENDER ---------------- */
 function renderGrid(){
   const table = document.getElementById('gridTable');
@@ -693,7 +1031,9 @@ function renderGrid(){
           ? `<div class="cell-rarity-badge" id="rarity-${r}-${c}">Rarity ${cs.rarity}/10</div>`
           : `<div class="cell-rarity-badge" id="rarity-${r}-${c}">Rarity …</div>`;
         const yearsHtml = `<div class="cell-years" id="years-${r}-${c}">${cs.years || ''}</div>`;
-        inner = `<div class="cell-inner"><div class="cell-name">✓ ${cs.guess}</div>${yearsHtml}${rarityHtml}</div>`;
+        const dupeCount = cellState.flat().filter(x=>x.status==='correct' && normalize(x.guess)===normalize(cs.guess)).length;
+        const dupeHtml = dupeCount>1 ? `<div class="cell-dupe">Used ${dupeCount}x in grid</div>` : '';
+        inner = `<div class="cell-inner"><div class="cell-name">✓ ${cs.guess}</div>${yearsHtml}${rarityHtml}${dupeHtml}</div>`;
       } else if(cs.status==='wrong'){
         cls += ' wrong';
         inner = `<div class="cell-inner"><div class="cell-miss">X</div><div class="cell-name" style="opacity:0.6;font-size:11px;">${cs.guess}</div></div>`;
@@ -703,6 +1043,7 @@ function renderGrid(){
     html += '</tr>';
   }
   table.innerHTML = html;
+  updateAutocompleteVisibility();
 }
 
 function renderScoreboard(){
@@ -756,6 +1097,7 @@ async function renderRaritiesIfDone(){
   if(allFilled()) renderSummary();
 }
 
+const SITE_URL = 'https://doyouknowball.app';
 function generateShareText(){
   const correct = cellState.flat().filter(c=>c.status==='correct').length;
   let lines = [];
@@ -766,7 +1108,7 @@ function generateShareText(){
     }
     lines.push(row);
   }
-  return `Think You Know Ball? — ${puzzle.date}\n${correct}/9 correct\n\n${lines.join('\n')}`;
+  return `Think You Know Ball? — ${puzzle.date} (${DIFFICULTY_INFO[difficulty].label})\n${correct}/9 correct\n\n${lines.join('\n')}\n\nPlay today's grid: ${SITE_URL}`;
 }
 async function shareResults(){
   const text = generateShareText();
@@ -777,6 +1119,25 @@ async function shareResults(){
     window.prompt('Copy your results:', text);
   }
 }
+let _confettiFiredForDate = null;
+function fireConfetti(){
+  const layer = document.getElementById('confettiLayer');
+  if(!layer) return;
+  layer.innerHTML = '';
+  const colors = ['#d4a017','#e8b923','#e9e4d6','#14213d','#9b2226'];
+  const count = 90;
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = (Math.random()*100) + 'vw';
+    el.style.background = colors[i % colors.length];
+    el.style.animationDuration = (2.2 + Math.random()*1.6) + 's';
+    el.style.animationDelay = (Math.random()*0.5) + 's';
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+    layer.appendChild(el);
+  }
+  setTimeout(()=>{ layer.innerHTML=''; }, 4200);
+}
 function renderSummary(){
   if(!allFilled()){ document.getElementById('summaryZone').innerHTML=''; return; }
   const correct = cellState.flat().filter(c=>c.status==='correct').length;
@@ -785,26 +1146,39 @@ function renderSummary(){
     <div class="summary">
       <h2>${correct} / 9</h2>
       <p>${msg}</p>
-      <p>Current streak: ${stats.streak} day${stats.streak===1?'':'s'}</p>
+      <p>Mode: ${DIFFICULTY_INFO[difficulty].label} · Current streak: ${stats.streak} day${stats.streak===1?'':'s'}</p>
       <button class="btn primary" style="margin-top:10px;" onclick="shareResults()">📋 Share Results</button>
     </div>
   `;
+  if(correct===9 && _confettiFiredForDate!==(puzzle.date+':'+puzzle.mode)){
+    _confettiFiredForDate = puzzle.date+':'+puzzle.mode;
+    fireConfetti();
+  }
 }
 
 /* ---------------- MODAL / GUESS FLOW ---------------- */
+function usedNamesInGrid(){
+  const names = new Set();
+  cellState.flat().forEach(cs=>{ if(cs.status==='correct') names.add(normalize(cs.guess)); });
+  return names;
+}
 function onCellClick(r,c){
   if(cellState[r][c].status!=='empty') return;
   const team = puzzle.teams[r];
   const college = puzzle.cols[c];
+  const info = DIFFICULTY_INFO[difficulty];
   const zone = document.getElementById('modalZone');
+  const canHint = info.hint && !hintUsedThisPuzzle;
   zone.innerHTML = `
     <div class="modal-backdrop" id="backdrop">
       <div class="modal">
         <h3>${college} → ${team}</h3>
         <div class="req">Name a player who played college ball at ${college} and later played for the ${team}.</div>
         <input type="text" id="guessInput" placeholder="Start typing a name…" autocomplete="off">
-        <div class="suggest" id="suggestList"></div>
         <div class="hint" id="noMatchHint"></div>
+        ${info.noRepeat ? '<div class="hint">Hall of Fame mode: no player can be reused elsewhere in this grid.</div>' : ''}
+        ${info.autocomplete ? '<div class="hint">Stuck on the whole grid? Use the Autocomplete Grid button below the board — it surrenders your streak.</div>' : ''}
+        ${info.hint ? `<button class="hint-btn" id="hintBtn" ${canHint?'':'disabled'} onclick="useHint('${team.replace(/'/g,"\\'")}','${college.replace(/'/g,"\\'")}')">${canHint ? '💡 Use hint (reveals initials)' : '💡 Hint already used this puzzle'}</button><div class="hint-reveal" id="hintReveal"></div>` : ''}
         <div class="modal-actions">
           <button class="btn" onclick="closeModal()">Cancel</button>
           <button class="btn primary" id="submitGuess">Submit</button>
@@ -816,24 +1190,61 @@ function onCellClick(r,c){
   input.focus();
   input.addEventListener('input', ()=>{
     const val = normalize(input.value);
-    const list = document.getElementById('suggestList');
     const hint = document.getElementById('noMatchHint');
-    if(val.length<2){ list.innerHTML=''; hint.innerHTML=''; return; }
-    const matches = ALL_NAMES.filter(n => normalize(n).includes(val)).slice(0,8);
-    list.innerHTML = matches.map(n=>`<div onclick="selectSuggestion('${n.replace(/'/g,"\\'")}')">${n}</div>`).join('');
-    // No suggestions usually means this exact spelling isn't in the database —
-    // double-check the spelling, but you can still submit if you're confident.
-    hint.innerHTML = matches.length ? '' : `No exact match found yet — double-check the spelling and submit when ready.`;
+    if(val.length<2){ hint.innerHTML=''; return; }
+    const hasMatch = ALL_NAMES.some(n => normalize(n).includes(val));
+    hint.innerHTML = hasMatch ? '' : `No matching name found yet — double-check the spelling and submit when ready.`;
   });
   input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') submitGuess(r,c,input.value); });
   document.getElementById('submitGuess').onclick = ()=>submitGuess(r,c,input.value);
   document.getElementById('backdrop').addEventListener('click',(e)=>{ if(e.target.id==='backdrop') closeModal(); });
 }
-function selectSuggestion(name){
-  document.getElementById('guessInput').value = name;
-  document.getElementById('suggestList').innerHTML='';
+function playerInitials(name){
+  return name.split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()).join('.') + '.';
+}
+function useHint(team, college){
+  if(hintUsedThisPuzzle) return;
+  const pool = playersFor(team, college);
+  if(!pool.length) return;
+  const pick = pool[Math.floor(Math.random()*pool.length)];
+  hintUsedThisPuzzle = true;
+  lsSet('hint:'+puzzle.date+':'+puzzle.mode, '1');
+  const reveal = document.getElementById('hintReveal');
+  if(reveal) reveal.textContent = `Initials: ${playerInitials(pick.n)} · ${pick.n.length} characters`;
+  const btn = document.getElementById('hintBtn');
+  if(btn){ btn.disabled = true; btn.textContent = '💡 Hint already used this puzzle'; }
 }
 function closeModal(){ document.getElementById('modalZone').innerHTML=''; }
+
+/* ---------------- HOW TO PLAY ---------------- */
+function openHowTo(){
+  const zone = document.getElementById('howtoZone');
+  zone.innerHTML = `
+    <div class="modal-backdrop" id="howtoBackdrop">
+      <div class="modal">
+        <h3>How to Play</h3>
+        <ol class="howto-list">
+          <li>Each box crosses an <b>NFL team</b> with a <b>college program</b>.</li>
+          <li>Click a box and name a real player who played college ball there <b>and</b> later played for that NFL team.</li>
+          <li>One guess per box — there's no second try, so type carefully.</li>
+          <li>Correct picks show a <b>rarity score</b> (10 = obscure, 1 = obvious) and the years played.</li>
+          <li>Rookie mode gets one free <b>hint</b> per puzzle — reveals the player's initials and name length.</li>
+          <li>Stuck on the whole board? <b>Autocomplete Grid</b> fills every remaining box with the most accomplished, most recently active player who fits that cell — but it resets your streak to 0. It's not available in Hall of Fame.</li>
+          <li>Land a <b>3-day streak</b> of 6+/9 in Rookie to unlock <b>Pro</b> (no hints). String together a 3-day streak of 7+/9 in Pro to unlock <b>Hall of Fame</b> — no Autocomplete Grid, and no reusing the same player twice in one grid.</li>
+          <li>A new grid unlocks every day — use the date picker to replay past puzzles.</li>
+        </ol>
+        <div class="modal-actions" style="justify-content:flex-end;">
+          <button class="btn primary" onclick="closeHowTo()">Got it</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('howtoBackdrop').addEventListener('click',(e)=>{ if(e.target.id==='howtoBackdrop') closeHowTo(); });
+}
+function closeHowTo(){
+  document.getElementById('howtoZone').innerHTML='';
+  lsSet('seenHowTo', '1');
+}
 
 function showToast(text, kind){
   const el = document.getElementById('toast');
@@ -854,6 +1265,17 @@ async function submitGuess(r,c,rawVal){
   // Check the curated + real nflverse database (~18,500 entries). Instant, no network
   // call, so there's no "couldn't verify" state — every guess resolves immediately.
   const localMatch = playersFor(team, college).find(p => normalize(p.n)===norm);
+  const info = DIFFICULTY_INFO[difficulty];
+
+  if(localMatch && info.noRepeat && usedNamesInGrid().has(normalize(localMatch.n))){
+    cellState[r][c] = {status:'wrong', guess: val + ' (already used)'};
+    renderGrid();
+    renderScoreboard();
+    showToast('Already used elsewhere in this grid', 'wrong');
+    await saveProgress();
+    if(allFilled()) await finalizeIfNeeded();
+    return;
+  }
 
   if(localMatch){
     cellState[r][c] = {status:'correct', guess:localMatch.n, rarity:null, years:null};
@@ -883,8 +1305,8 @@ async function submitGuess(r,c,rawVal){
 }
 
 async function finalizeIfNeeded(){
+  const correct = cellState.flat().filter(c=>c.status==='correct').length;
   if(stats.lastDate !== puzzle.date){
-    const correct = cellState.flat().filter(c=>c.status==='correct').length;
     stats.played = (stats.played||0) + 1;
     if(correct>0){
       stats.streak = (stats.streak||0) + 1;
@@ -892,10 +1314,62 @@ async function finalizeIfNeeded(){
       stats.streak = 0;
     }
     stats.lastDate = puzzle.date;
-    await saveStats();
   }
+  updateModeUnlocks(correct);
+  await saveStats();
+  applyDifficultyUI();
   renderScoreboard();
   await renderRaritiesIfDone();
+}
+
+/* ---------------- AUTOCOMPLETE GRID (surrender) ---------------- */
+function updateAutocompleteVisibility(){
+  const row = document.getElementById('autocompleteRow');
+  if(!row || !puzzle) return;
+  const info = DIFFICULTY_INFO[difficulty];
+  const remaining = cellState.flat().filter(c=>c.status!=='correct').length;
+  row.style.display = (info.autocomplete && remaining>0) ? 'flex' : 'none';
+}
+// Surrendering doesn't earn the streak/unlock progress a real finish would — it forces
+// the streak to 0 and wipes any in-progress unlock streak for whichever tier was being
+// played, since the grid wasn't actually solved.
+async function surrenderFinalize(){
+  if(stats.lastDate !== puzzle.date){
+    stats.played = (stats.played||0) + 1;
+    stats.lastDate = puzzle.date;
+  }
+  stats.streak = 0;
+  stats.unlocked = stats.unlocked || defaultUnlocks();
+  stats.modeProgress = stats.modeProgress || defaultModeProgress();
+  if(difficulty==='rookie') stats.modeProgress.rookie = {count:0,lastDate:null};
+  if(difficulty==='pro') stats.modeProgress.pro = {count:0,lastDate:null};
+  await saveStats();
+  applyDifficultyUI();
+  renderScoreboard();
+  await renderRaritiesIfDone();
+}
+async function confirmAutocomplete(){
+  const remaining = cellState.flat().filter(c=>c.status!=='correct').length;
+  if(remaining===0) return;
+  const ok = window.confirm('Autocomplete reveals the rest of the grid with the most accomplished, most recently active player for each cell — and resets your streak to 0. This can\'t be undone. Continue?');
+  if(!ok) return;
+  for(let r=0;r<3;r++){
+    for(let c=0;c<3;c++){
+      if(cellState[r][c].status==='correct') continue;
+      const team = puzzle.teams[r];
+      const college = puzzle.cols[c];
+      const best = bestKnownPlayerFor(team, college);
+      if(best){
+        cellState[r][c] = {status:'correct', guess:best.n, rarity:null, years:null};
+      }
+    }
+  }
+  renderGrid();
+  renderScoreboard();
+  await saveProgress();
+  await surrenderFinalize();
+  renderSummary();
+  showToast('Grid revealed — streak reset to 0', 'wrong');
 }
 
 /* ---------------- ARCHIVE (play past puzzles) ---------------- */
@@ -909,17 +1383,27 @@ function freshCellState(){
   return cs;
 }
 
+let currentDateStr = null;
 async function loadPuzzleForDate(dateStr){
+  currentDateStr = dateStr;
+  // Load stats first so we know the CONFIRMED unlocked difficulty before building the
+  // puzzle — each mode now generates its own distinct grid, so we can't build until we
+  // know which mode we're actually allowed to be in.
+  await loadStats();
+  enforceDifficultyUnlocked();
+
   // Build the new puzzle and immediately wipe + render an empty board BEFORE any
   // async storage lookups run. This guarantees the old puzzle's picks can never
   // stay on screen, even for an instant, while we go check for saved progress.
-  puzzle = buildTodaysPuzzle(dateStr);
+  puzzle = buildTodaysPuzzle(dateStr, difficulty);
   cellState = freshCellState();
+  hintUsedThisPuzzle = lsGet('hint:'+puzzle.date+':'+puzzle.mode) === '1';
+  applyDifficultyUI();
   renderGrid();
   renderScoreboard();
   document.getElementById('summaryZone').innerHTML = '';
 
-  await loadProgress();
+  await loadCellState();
   renderGrid();
   renderScoreboard();
   await renderRaritiesIfDone();
@@ -946,6 +1430,7 @@ async function loadData(){
 }
 async function init(){
   await loadData();
+  applyDifficultyUI();
   const dateInput = document.getElementById('archiveDate');
   if(dateInput){
     dateInput.max = TODAY_STR;
@@ -953,6 +1438,7 @@ async function init(){
     dateInput.value = TODAY_STR;
   }
   await loadPuzzleForDate(TODAY_STR);
+  if(!lsGet('seenHowTo')) openHowTo();
 }
 init();
 </script>
