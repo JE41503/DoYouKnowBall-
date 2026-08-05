@@ -994,12 +994,11 @@ function careerRangeForName(name){
 function careerLengthForName(name){
   return careerRangeForName(name).length;
 }
-// Display text for the autocomplete dropdown: how many seasons, and which years.
+// Display text for the autocomplete dropdown: the years they were active, e.g. "2001–2013".
 function careerSpanTextForName(name){
   const r = careerRangeForName(name);
   if(r.min===null) return null;
-  const years = r.min===r.max ? `${r.min}` : `${r.min}–${r.max}`;
-  return `${r.length} season${r.length===1?'':'s'} · ${years}`;
+  return r.min===r.max ? `${r.min}` : `${r.min}–${r.max}`;
 }
 function longevityScoreFor(name){
   const len = careerLengthForName(name);
@@ -1218,7 +1217,7 @@ function onCellClick(r,c){
       const matches = ALL_NAMES.filter(n => normalize(n).includes(val)).slice(0,8);
       list.innerHTML = matches.map(n=>{
         const span = careerSpanTextForName(n);
-        const spanHtml = span ? `<span class="suggest-years">${span}</span>` : '<span class="suggest-years">No NFL years on file</span>';
+        const spanHtml = span ? `<span class="suggest-years">${span}</span>` : '';
         return `<div onclick="selectSuggestion('${n.replace(/'/g,"\\'")}')"><span class="suggest-name">${n}</span>${spanHtml}</div>`;
       }).join('');
       // No suggestions usually means this exact spelling isn't in the database —
@@ -1273,7 +1272,7 @@ function openHowTo(){
           <li>One guess per box — there's no second try, so type carefully.</li>
           <li>Correct picks show a <b>rarity score</b> (10 = obscure, 1 = obvious) and the years played.</li>
           <li>Rookie mode gets one free <b>hint</b> per puzzle — reveals the player's initials and name length.</li>
-          <li>In Rookie and Pro, typing shows matching names with how many NFL seasons they played and which years — Hall of Fame turns this off.</li>
+          <li>In Rookie and Pro, typing shows matching names with the years they were active in the NFL underneath — Hall of Fame turns this off.</li>
           <li>Stuck on the whole board instead? <b>Autocomplete Grid</b> fills every remaining box with the most accomplished, most recently active player who fits that cell — but it resets your streak to 0. It's not available in Hall of Fame.</li>
           <li>Land a <b>3-day streak</b> of 6+/9 in Rookie to unlock <b>Pro</b> (no hints). String together a 3-day streak of 7+/9 in Pro to unlock <b>Hall of Fame</b> — no Autocomplete Grid, and no reusing the same player twice in one grid.</li>
           <li>A new grid unlocks every day — use the date picker to replay past puzzles.</li>
